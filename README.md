@@ -1,0 +1,1 @@
+# qatable-universal-links
