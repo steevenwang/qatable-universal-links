@@ -119,7 +119,7 @@
 <div class="container">
 
     <div class="logo">
-        <img src="./icon.png" alt="Project Q Logo">
+        <img src="/icon.png" alt="Project Q Logo">
     </div>
 
     <h1>Project Q</h1>
@@ -152,7 +152,7 @@
     </div>
 
     <p class="availability-text">Soon Available on App Store and Google Play</p>
-    <img src="./logos.png" alt="Download on App Store and Google Play" class="store-badges">
+    <img src="/logos.png" alt="Download on App Store and Google Play" class="store-badges">
 
     <div class="footer">
         <p>Project Q - Restaurant Queue & Ordering System</p>
@@ -163,21 +163,31 @@
 
 <script>
     // Attempt to open the app if user has it installed
-    // This provides a seamless fallback for Universal Links
+    // Using hidden iframe method to avoid Safari warning dialogs
     const path = window.location.pathname;
     const match = path.match(/\/restaurant\/([^/]+)/);
     
     if (match) {
         const restaurantId = match[1];
-        console.log('Attempting to open app for restaurant:', restaurantId);
+        console.log('Restaurant ID detected:', restaurantId);
         
-        // Try to open the app with custom scheme
-        window.location.href = `projectq://restaurant/${restaurantId}`;
-        
-        // If app doesn't open within 1.5 seconds, user will see this fallback page
-        setTimeout(() => {
-            console.log('App not installed or did not open - showing fallback page');
-        }, 1500);
+        // Try to open the app using hidden iframe method (suppresses Safari warnings)
+        try {
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `projectq://restaurant/${restaurantId}`;
+            document.body.appendChild(iframe);
+            
+            // Clean up iframe after attempt
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+            }, 2000);
+            
+            console.log('Attempted to open app - if app is installed, it should open now');
+        } catch (e) {
+            // Silently fail - user will see the fallback page
+            console.log('App not installed - showing fallback page');
+        }
     }
 </script>
 </body>
