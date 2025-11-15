@@ -4,7 +4,11 @@
     "details": [
       {
         "appID": "N69CKMA8QT.com.projectq.projectq",
-        "paths": ["/restaurant/*", "/r/*"]
+        "paths": [
+          "/restaurant/*",
+          "/r/*",
+          "/photo/*"
+        ]
       }
     ]
   }
