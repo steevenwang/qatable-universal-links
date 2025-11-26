@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Project Q</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #F37021 0%, #FF8C42 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(243, 112, 33, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FFF4ED;
+            font-size: 48px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .spinner {
+            border: 4px solid #FFF4ED;
+            border-top: 4px solid #F37021;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button {
+            display: inline-block;
+            background: #F37021;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 16px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 112, 33, 0.4);
+            background: #FF8C42;
+        }
+
+        .footer {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .icon-success {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+
+        .icon-error {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: #F44336;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loading" style="display: block;">
+            <div class="logo">⏳</div>
+            <h1>Verifying Your Email</h1>
+            <p class="subtitle">Please wait while we verify your email address...</p>
+            <div class="spinner"></div>
+        </div>
+        
+        <!-- Success State -->
+        <div id="success" style="display: none;">
+            <div class="icon-success">✓</div>
+            <h1>Email Verified!</h1>
+            <p class="subtitle">Your email has been successfully verified. You can now access all features in Project Q.</p>
+            <a href="https://qatable.fr" class="button">Return to Website</a>
+            
+            <div class="footer">
+                <p>Project Q - Restaurant Queue & Ordering System</p>
+                <p style="margin-top: 4px;">© 2025 QaTable. All rights reserved.</p>
+            </div>
+        </div>
+        
+        <!-- Error State -->
+        <div id="error" style="display: none;">
+            <div class="icon-error">✗</div>
+            <h1>Verification Failed</h1>
+            <p class="subtitle" id="error-message">The verification link may have expired or is invalid. Please try signing up again.</p>
+            <a href="https://qatable.fr" class="button">Return to Website</a>
+            
+            <div class="footer">
+                <p>Project Q - Restaurant Queue & Ordering System</p>
+                <p style="margin-top: 4px;">© 2025 QaTable. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appwrite Web SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+    
+    <script>
+        // Initialize Appwrite
+        const client = new Appwrite.Client()
+            .setEndpoint('https://cloud.appwrite.io/v1')
+            .setProject('67ab99da0016cef062a9'); // Your project ID
+
+        const account = new Appwrite.Account(client);
+
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+        const secret = urlParams.get('secret');
+
+        // Verify email
+        async function verifyEmail() {
+            try {
+                if (!userId || !secret) {
+                    throw new Error('Missing verification parameters');
+                }
+
+                // Call Appwrite verification API
+                await account.updateVerification(userId, secret);
+
+                // Show success
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('success').style.display = 'block';
+                
+                console.log('Email verified successfully');
+            } catch (error) {
+                console.error('Verification error:', error);
+                
+                // Show error
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                
+                if (error.message) {
+                    document.getElementById('error-message').textContent = error.message;
+                }
+            }
+        }
+
+        // Start verification when page loads
+        verifyEmail();
+    </script>
+</body>
+</html>
