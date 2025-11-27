@@ -162,31 +162,41 @@
 </div>
 
 <script>
-    // Attempt to open the app if user has it installed
-    // Using hidden iframe method to avoid Safari warning dialogs
+    // Handle different Universal Link paths
     const path = window.location.pathname;
-    const match = path.match(/\/restaurant\/([^/]+)/);
+    const search = window.location.search;
     
-    if (match) {
-        const restaurantId = match[1];
-        console.log('Restaurant ID detected:', restaurantId);
+    // Handle email verification path
+    if (path === '/verify' || path === '/verify/') {
+        console.log('Email verification link detected');
+        // Redirect to verify.html with query params
+        window.location.replace('/verify.html' + search);
+    }
+    // Handle restaurant sharing paths
+    else {
+        const restaurantMatch = path.match(/\/restaurant\/([^/]+)/);
         
-        // Try to open the app using hidden iframe method (suppresses Safari warnings)
-        try {
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = `projectq://restaurant/${restaurantId}`;
-            document.body.appendChild(iframe);
+        if (restaurantMatch) {
+            const restaurantId = restaurantMatch[1];
+            console.log('Restaurant ID detected:', restaurantId);
             
-            // Clean up iframe after attempt
-            setTimeout(() => {
-                document.body.removeChild(iframe);
-            }, 2000);
-            
-            console.log('Attempted to open app - if app is installed, it should open now');
-        } catch (e) {
-            // Silently fail - user will see the fallback page
-            console.log('App not installed - showing fallback page');
+            // Try to open the app using hidden iframe method (suppresses Safari warnings)
+            try {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = `projectq://restaurant/${restaurantId}`;
+                document.body.appendChild(iframe);
+                
+                // Clean up iframe after attempt
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 2000);
+                
+                console.log('Attempted to open app - if app is installed, it should open now');
+            } catch (e) {
+                // Silently fail - user will see the fallback page
+                console.log('App not installed - showing fallback page');
+            }
         }
     }
 </script>
