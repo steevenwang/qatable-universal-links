@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 – Project Q</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --orange:  #F37021;
+      --dark:    #1A1008;
+      --muted:   #7A6359;
+      --bg:      #fdf5f0;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* ── FULL-SCREEN BACKGROUND ── */
+    .page {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      z-index: 0;
+    }
+
+    /* Same dark overlay as About Us / Contact */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(20, 10, 4, 0.72) 0%,
+        rgba(20, 10, 4, 0.45) 55%,
+        rgba(20, 10, 4, 0.20) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      padding: 28px 52px;
+    }
+
+    .logo-lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(243,112,33,0.30);
+      flex-shrink: 0;
+    }
+
+    .logo-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .logo-name {
+      font-size: 18px;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 0 52px 80px;
+      animation: fadeUp 0.9s cubic-bezier(.22,.68,0,1.2) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .error-code {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(96px, 16vw, 180px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .error-code em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .error-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .error-sub {
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.70);
+      line-height: 1.7;
+      max-width: 400px;
+      margin-bottom: 40px;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--orange);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 13px 28px;
+      border-radius: 50px;
+      transition: background .2s, transform .15s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-home:hover  { background: #d4601a; }
+    .btn-home:active { transform: scale(0.97); }
+
+    .btn-home svg {
+      width: 18px;
+      height: 18px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 16px 24px 20px;
+      background: rgba(253, 245, 240, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid rgba(243,112,33,0.10);
+    }
+
+    .footer p { font-size: 12px; font-weight: 400; color: var(--muted); }
+    .footer p + p { margin-top: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Background -->
+  <img class="bg-img" src="./QaTable_Background.png" alt="">
+  <div class="overlay"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="logo-lockup" href="/">
+      <div class="logo-icon">
+        <img src="./icon.png" alt="Project Q">
+      </div>
+      <span class="logo-name">Project Q</span>
+    </a>
+  </nav>
+
+  <!-- Main content -->
+  <main class="content">
+    <div class="error-code">4<em>0</em>4</div>
+    <h1 class="error-title">Page not found.</h1>
+    <p class="error-sub">
+      The page you're looking for doesn't exist or has been moved.
+      Head back to the home page and try again.
+    </p>
+    <a class="btn-home" href="/">
+      <svg viewBox="0 0 24 24">
+        <path d="M19 12H5M5 12l7-7M5 12l7 7"/>
+      </svg>
+      Back to home
+    </a>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Project Q – Restaurant Queue &amp; Ordering System</p>
+    <p>© 2025 QaTable. All rights reserved.</p>
+  </footer>
+
+</div>
+
+<script>
+  // ── Universal Link / deep link routing ──────────────────────────────────
+  // Preserve the routing logic for app deep links served via GitHub Pages
+
+  const path   = window.location.pathname;
+  const search = window.location.search;
+
+  // Email verification redirect
+  if (path === '/verify' || path === '/verify/') {
+    window.location.replace('/verify.html' + search);
+  }
+
+  // Restaurant deep link → try to open the app
+  const restaurantMatch = path.match(/\/restaurant\/([^/]+)/);
+  if (restaurantMatch) {
+    const restaurantId = restaurantMatch[1];
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = 'projectq://restaurant/' + restaurantId;
+      document.body.appendChild(iframe);
+      setTimeout(function() {
+        if (document.body.contains(iframe)) document.body.removeChild(iframe);
+      }, 2000);
+    } catch (e) { /* app not installed — user sees the 404 page */ }
+  }
+
+  // Restaurant page query-param style
+  const params = new URLSearchParams(search);
+  if (params.get('restaurantId')) {
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = 'projectq://restaurant/' + params.get('restaurantId');
+      document.body.appendChild(iframe);
+      setTimeout(function() {
+        if (document.body.contains(iframe)) document.body.removeChild(iframe);
+      }, 2000);
+    } catch (e) { /* silent fallback */ }
+  }
+</script>
+
+</body>
+</html>
